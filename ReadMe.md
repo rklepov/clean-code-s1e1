@@ -12,4 +12,4 @@
     - Установка элемента в статус незавершенного и перенос в список "TODO" через checkbox
     - Анимация на кнопке удаления
 
-# [Deployed version](ttps://rklepov.github.io/clean-code-s1e1/)
+# [Deployed version](https://rklepov.github.io/clean-code-s1e1/)
