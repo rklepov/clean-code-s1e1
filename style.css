@@ -8,6 +8,8 @@
   font-family: Lato, sans-serif;
 }
 
+/* Header */
+
 .header {
   width: 500px;
   margin: 0 auto;
@@ -15,11 +17,11 @@
   text-align: right;
 }
 
-.header img {
+.header__image {
   width: 100%;
 }
 
-.header .more_inf {
+.header__link {
   font-family: fantasy, cursive;
 }
 
