@@ -6,14 +6,17 @@
   background-color: #f8f8f8;
   color: #333;
   font-family: Lato, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
 }
 
 /* Header */
 
 .header {
   width: 500px;
-  margin: 0 auto;
-  display: block;
   text-align: right;
 }
 
@@ -34,9 +37,11 @@
 /* Main section */
 
 .main {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
   width: 500px;
-  margin: 0 auto 0;
 }
 
 .section__heading {
@@ -44,7 +49,7 @@
   font-weight: 700;
   font-size: 15px;
   border-bottom: 2px solid #333;
-  padding: 30px 0 10px;
+  padding: 0 0 10px;
   margin: 0;
   text-transform: uppercase;
 }
