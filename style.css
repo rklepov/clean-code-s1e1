@@ -55,13 +55,14 @@
 }
 
 .task {
-  width: 56%;
-  display: inline-block;
-  flex-grow: 1;
+  display: flex;
+
+  padding: 20px 0;
 }
 
-.task-row-wrapper {
-  display: flex;
+.task__item-text {
+  width: 56%;
+  flex-grow: 1;
 }
 
 ul {
