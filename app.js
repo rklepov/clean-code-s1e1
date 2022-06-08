@@ -11,6 +11,7 @@ function createNewTaskElement(taskString) {
 
   const checkBox = document.createElement("input"); //checkbox
   checkBox.type = "checkbox";
+  checkBox.classList.add("task__check");
 
   const label = document.createElement("label"); //label
   label.innerText = taskString;
@@ -22,15 +23,16 @@ function createNewTaskElement(taskString) {
 
   const editButton = document.createElement("button"); //edit button
   editButton.innerText = "Edit"; //innerText encodes special characters, HTML does not.
-  editButton.classList.add("edit", "button", "task__edit-button");
+  editButton.classList.add("button", "task__edit-button");
 
   const deleteButton = document.createElement("button"); //delete button
-  deleteButton.classList.add("delete", "button", "task__delete-button");
+  deleteButton.classList.add("button", "button_delete", "task__delete-button");
 
   const deleteButtonImg = document.createElement("img"); //delete button image
   deleteButtonImg.src = "./remove.svg";
-  deleteButton.alt = "";
-  deleteButton.classList.add("button__image");
+  deleteButtonImg.alt = "";
+  deleteButtonImg.classList.add("button__image", "button__image_action_delete");
+
   deleteButton.appendChild(deleteButtonImg);
 
   listItem.appendChild(checkBox);
@@ -44,11 +46,12 @@ function createNewTaskElement(taskString) {
 
 function addTask() {
   console.log("Add Task...");
-  //Create a new list item with the text from the #new-task:
+
+  // create a new list item with the text from #new-task:
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
 
-  //Append listItem to incompleteTaskHolder
+  // append listItem to incompleteTaskHolder
   incompleteTaskHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskCompleted);
 
@@ -61,23 +64,26 @@ function editTask() {
 
   const listItem = this.parentNode;
 
-  const editInput = listItem.querySelector("input[type=text]");
-  const label = listItem.querySelector("label");
-  const editBtn = listItem.querySelector(".edit");
-  const containsClass = listItem.classList.contains("edit-mode");
-  //If class of the parent is .edit-mode
-  if (containsClass) {
-    //switch to .edit-mode
-    //label becomes the inputs value.
-    label.innerText = editInput.value;
-    editBtn.innerText = "Edit";
+  const editMode = listItem.classList.contains("task_mode_edit");
+
+  const input = listItem.querySelector(".task__input");
+  const label = listItem.querySelector(".task__label");
+  const button = listItem.querySelector(".task__edit-button");
+
+  if (editMode) {
+    // switch to edit mode
+    // label becomes the inputs value.
+    label.innerText = input.value;
+    button.innerText = "Edit";
   } else {
-    editInput.value = label.innerText;
-    editBtn.innerText = "Save";
+    input.value = label.innerText;
+    button.innerText = "Save";
   }
 
-  //toggle .edit-mode on the parent.
-  listItem.classList.toggle("edit-mode");
+  // toggle edit mode
+  listItem.classList.toggle("task_mode_edit");
+  input.classList.toggle("task__input_mode_edit");
+  label.classList.toggle("task__label_mode_edit");
 }
 
 function deleteTask() {
@@ -85,59 +91,62 @@ function deleteTask() {
 
   const listItem = this.parentNode;
   const ul = listItem.parentNode;
-  //Remove the parent list item from the ul.
+  // remove the parent list item from the ul.
   ul.removeChild(listItem);
 }
 
 function taskCompleted() {
   console.log("Complete Task...");
 
-  //Append the task list item to the #completed-tasks
+  // Append the task list item to the #completed-tasks
   const listItem = this.parentNode;
+  listItem.classList.add("task_completed");
   completedTasksHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskIncomplete);
 }
 
 function taskIncomplete() {
   console.log("Incomplete Task...");
-  //Mark task as incomplete.
-  //When the checkbox is unchecked
-  //Append the task list item to the #incompleteTasks.
+  // Mark task as incomplete.
+  // When the checkbox is unchecked
+  // Append the task list item to the #incompleteTasks.
   const listItem = this.parentNode;
+  listItem.classList.remove("task_completed");
   incompleteTaskHolder.appendChild(listItem);
   bindTaskEvents(listItem, taskCompleted);
 }
 
-//The glue to hold it all together.
+// The glue to hold it all together.
 
-//Set the click handler to the addTask function.
+// Set the click handler to the addTask function.
 addButton.addEventListener("click", addTask);
 
 function bindTaskEvents(taskListItem, checkBoxEventHandler) {
   console.log("bind list item events");
-  //select ListItems children
-  const checkBox = taskListItem.querySelector("input[type=checkbox]");
-  const editButton = taskListItem.querySelector("button.edit");
-  const deleteButton = taskListItem.querySelector("button.delete");
 
-  //Bind editTask to edit button.
+  // select ListItems children
+  const checkBox = taskListItem.querySelector(".task__check");
+  const editButton = taskListItem.querySelector(".task__edit-button");
+  const deleteButton = taskListItem.querySelector(".task__delete-button");
+
+  // Bind editTask to edit button.
   editButton.onclick = editTask;
-  //Bind deleteTask to delete button.
+  // Bind deleteTask to delete button.
   deleteButton.onclick = deleteTask;
-  //Bind taskCompleted to checkBoxEventHandler.
+  // Bind taskCompleted to checkBoxEventHandler.
   checkBox.onchange = checkBoxEventHandler;
 }
 
-//bind events to list items children(tasksCompleted)
+// bind events to list items children(tasksCompleted)
 Array.from(incompleteTaskHolder.children).forEach((child) => bindTaskEvents(child, taskCompleted));
 
-//bind events to list items children(tasksIncomplete)
+// bind events to list items children(tasksIncomplete)
 Array.from(completedTasksHolder.children).forEach((child) => bindTaskEvents(child, taskIncomplete));
 
 // Issues with usability don't get seen until they are in front of a human tester.
 
-//prevent creation of empty tasks.
+// prevent creation of empty tasks.
 
-//Change edit to save when you are in edit mode.
+// Change edit to save when you are in edit mode.
 
 //__EOF__
